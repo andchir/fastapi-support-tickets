@@ -14,7 +14,16 @@ from app.config import settings
 router = APIRouter()
 
 
+ALLOWED_MIME_PREFIXES = ("image/", "video/")
+
+
 async def save_upload(file: UploadFile) -> str:
+    content_type = file.content_type or ""
+    if not any(content_type.startswith(prefix) for prefix in ALLOWED_MIME_PREFIXES):
+        raise HTTPException(
+            status_code=400,
+            detail="Only image and video files are allowed",
+        )
     ext = os.path.splitext(file.filename)[1]
     filename = f"{uuid.uuid4()}{ext}"
     path = os.path.join(settings.upload_dir, filename)
