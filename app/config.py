@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     api_key_user: str = "user-secret-key-here"
     api_key_admin: str = "admin-secret-key-here"
     upload_dir: str = "uploads"
+    cors_allowed_origins: str = ""
+    ws_port: int = 8765
 
     class Config:
         env_file = ".env"

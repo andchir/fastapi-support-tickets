@@ -1,0 +1,374 @@
+#!/usr/bin/env python
+
+import sys
+from pathlib import Path
+
+_root = Path(__file__).resolve().parent.parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
+
+import uuid
+import asyncio
+import signal
+import json
+import logging
+from typing import Dict, List, Optional, Sequence
+from dataclasses import dataclass
+
+try:
+    from websockets.asyncio.server import serve, ServerConnection
+except ModuleNotFoundError:
+    from websockets.server import serve, ServerConnection
+
+from app.config import settings
+
+logging.basicConfig(level=logging.WARNING)
+logger = logging.getLogger(__name__)
+
+# Forward mapping: key (UUID or tmp_UUID) -> websocket
+CONNECTIONS: Dict[str, ServerConnection] = {}
+# Reverse mapping: websocket id -> key, for O(1) cleanup on disconnect
+WS_TO_KEY: Dict[int, str] = {}
+
+
+def _normalize_origin(value: str) -> str:
+    return value.strip().rstrip('/')
+
+
+def cors_origins_for_websocket() -> Optional[Sequence[str]]:
+    """
+    Values for websockets.serve(origins=...): None means no Origin check.
+    Otherwise exact-match strings (RFC6454 Origin, no trailing slash).
+    """
+    raw = (settings.cors_allowed_origins or '').strip()
+    if not raw:
+        return None
+    out: List[str] = []
+    for part in raw.split(','):
+        n = _normalize_origin(part)
+        if n:
+            out.append(n)
+    return out or None
+
+
+def _origin_allowed(origin: Optional[str], allowed: Optional[Sequence[str]]) -> bool:
+    if allowed is None:
+        return True
+    if not origin:
+        # Browsers always send Origin; Python/scripts often omit it — still allow when
+        # an allowlist is set so tools like web/client.py work behind uvicorn.
+        return True
+    normalized = _normalize_origin(origin)
+    return normalized in {_normalize_origin(a) for a in allowed}
+
+
+def _asgi_origin(scope: dict) -> Optional[str]:
+    for key, value in scope.get('headers') or []:
+        if key == b'origin':
+            return value.decode('latin-1')
+    return None
+
+
+def _asgi_header(scope: dict, name: bytes) -> Optional[bytes]:
+    for key, value in scope.get('headers') or []:
+        if key == name:
+            return value
+    return None
+
+
+def _http_cors_allow_origin_value(scope: dict) -> Optional[str]:
+    """Value for Access-Control-Allow-Origin, or None if the request Origin is forbidden."""
+    allowed = cors_origins_for_websocket()
+    origin = _asgi_origin(scope)
+    if allowed is None:
+        return '*'
+    if _origin_allowed(origin, allowed):
+        return origin if origin else '*'
+    return None
+
+
+def _append_cors_origin_headers(headers: List[List[bytes]], acao: str) -> None:
+    headers.append([b'access-control-allow-origin', acao.encode('utf-8')])
+    if acao != '*':
+        headers.append([b'vary', b'Origin'])
+
+
+def _http_is_root_path(path: str) -> bool:
+    return path.rstrip('/') == ''
+
+
+def _http_options_preflight_headers(scope: dict, acao: str) -> List[List[bytes]]:
+    headers: List[List[bytes]] = [
+        [b'allow', b'GET, OPTIONS'],
+        [b'access-control-allow-methods', b'GET, OPTIONS'],
+        [b'access-control-max-age', b'86400'],
+    ]
+    _append_cors_origin_headers(headers, acao)
+    acrh = _asgi_header(scope, b'access-control-request-headers')
+    headers.append([b'access-control-allow-headers', acrh or b'*'])
+    return headers
+
+
+async def _asgi_send_http(
+    send,
+    status: int,
+    headers: List[List[bytes]],
+    body: bytes = b'',
+) -> None:
+    await send({
+        'type': 'http.response.start',
+        'status': status,
+        'headers': headers,
+    })
+    await send({
+        'type': 'http.response.body',
+        'body': body,
+    })
+
+
+async def _http_forbidden_origin(send) -> None:
+    await _asgi_send_http(
+        send,
+        403,
+        [[b'content-type', b'text/plain']],
+        b'Forbidden origin',
+    )
+
+
+async def _http_not_found(send) -> None:
+    await _asgi_send_http(
+        send,
+        404,
+        [[b'content-type', b'text/plain']],
+        b'WebSocket endpoint only',
+    )
+
+
+@dataclass
+class WebSocketMessage:
+    recipient_uuid: Optional[str] = None
+    message: Optional[str] = None
+
+
+def _add_connection(key: str, websocket) -> None:
+    """Register a connection with both forward and reverse mappings."""
+    CONNECTIONS[key] = websocket
+    WS_TO_KEY[id(websocket)] = key
+
+
+def _remove_connection_by_key(key: str) -> None:
+    """Remove a connection by its key from both mappings."""
+    ws = CONNECTIONS.pop(key, None)
+    if ws is not None:
+        WS_TO_KEY.pop(id(ws), None)
+
+
+def _remove_connection_by_ws(websocket) -> None:
+    """Remove a connection by websocket reference using O(1) reverse lookup."""
+    key = WS_TO_KEY.pop(id(websocket), None)
+    if key is not None:
+        CONNECTIONS.pop(key, None)
+
+
+def _parse_message(message: str) -> WebSocketMessage:
+    """Parse an incoming WebSocket message into a WebSocketMessage."""
+    if not message.startswith('{'):
+        return WebSocketMessage(message=message)
+    data = json.loads(message)
+    if isinstance(data, dict):
+        return WebSocketMessage(**data)
+    return WebSocketMessage(message=message)
+
+
+async def register(websocket):
+    tmp_uuid = str(uuid.uuid4())
+    tmp_key = f'tmp_{tmp_uuid}'
+    logger.info(f'New connection: {tmp_uuid}')
+    _add_connection(tmp_key, websocket)
+    logger.info(f'Connections total: {len(CONNECTIONS)}')
+
+    try:
+        await websocket.send('..:: Hello from the Notification Center ::..')
+        async for message in websocket:
+            try:
+                event = _parse_message(message)
+
+                if event.message == 'connected' and event.recipient_uuid:
+                    logger.info(f'Set UUID: {event.recipient_uuid}')
+                    _remove_connection_by_key(tmp_key)
+                    _add_connection(event.recipient_uuid, websocket)
+                else:
+                    logger.info(f'Message: {event}')
+                    recipient_ws = CONNECTIONS.get(event.recipient_uuid) if event.recipient_uuid else None
+                    if recipient_ws is not None:
+                        await recipient_ws.send(event.message)
+                    else:
+                        logger.warning(f'Connection not found for UUID: {event.recipient_uuid}')
+            except json.JSONDecodeError as e:
+                logger.error(f'JSON decode error: {e}')
+            except Exception as e:
+                logger.error(f'Error processing message: {e}')
+
+    finally:
+        logger.info(f'Disconnected: {tmp_uuid}')
+        _remove_connection_by_ws(websocket)
+        logger.info(f'Connections total: {len(CONNECTIONS)}')
+
+
+async def main(port=8765):
+    logger.info('Starting WebSocket server')
+
+    # Set the stop condition when receiving SIGTERM.
+    loop = asyncio.get_running_loop()
+    stop = loop.create_future()
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+
+    async with serve(
+        register,
+        host='',
+        port=port,
+        reuse_port=True,
+        ping_interval=60,
+        ping_timeout=30,
+        origins=cors_origins_for_websocket(),
+    ):
+        await stop  # Waiting for SIGTERM signal to terminate
+
+
+# ASGI application for uvicorn compatibility
+async def app(scope, receive, send):
+    """
+    ASGI-compatible WebSocket application.
+
+    This allows running the WebSocket server with uvicorn:
+        uvicorn web.server:app --port 8765
+
+    or with gunicorn:
+        gunicorn -k uvicorn.workers.UvicornWorker web.server:app --bind 0.0.0.0:8765
+    """
+    if scope['type'] == 'websocket':
+        await websocket_handler(scope, receive, send)
+    else:
+        method = scope.get('method', b'GET')
+        if isinstance(method, bytes):
+            method = method.decode('latin-1')
+        path = scope.get('path') or '/'
+        m = method.upper()
+
+        if _http_is_root_path(path) and m in ('GET', 'OPTIONS'):
+            acao = _http_cors_allow_origin_value(scope)
+            if acao is None:
+                await _http_forbidden_origin(send)
+                return
+            if m == 'GET':
+                body = (
+                    'Queue Manager WebSocket — use ws:// with a WebSocket client.\n'
+                    'Example: python -m websockets ws://127.0.0.1:8765/\n'
+                ).encode('utf-8')
+                headers = [[b'content-type', b'text/plain; charset=utf-8']]
+                _append_cors_origin_headers(headers, acao)
+                await _asgi_send_http(send, 200, headers, body)
+                return
+            await _asgi_send_http(
+                send,
+                204,
+                _http_options_preflight_headers(scope, acao),
+                b'',
+            )
+            return
+
+        await _http_not_found(send)
+
+
+async def websocket_handler(scope, receive, send):
+    """Handle a single WebSocket connection using ASGI protocol."""
+    # Wait for connection
+    message = await receive()
+    if message['type'] != 'websocket.connect':
+        return
+
+    allowed = cors_origins_for_websocket()
+    if not _origin_allowed(_asgi_origin(scope), allowed):
+        await send({
+            'type': 'websocket.close',
+            'code': 1008,
+            'reason': 'Forbidden origin',
+        })
+        return
+
+    await send({'type': 'websocket.accept'})
+
+    tmp_uuid = str(uuid.uuid4())
+    tmp_key = f'tmp_{tmp_uuid}'
+    logger.info(f'New ASGI connection: {tmp_uuid}')
+
+    # Create a pseudo-websocket object to work with existing register logic
+    class ASGIWebSocket:
+        def __init__(self, scope, receive, send):
+            self.scope = scope
+            self._receive = receive
+            self._send = send
+            self._closed = False
+
+        async def send(self, message: str):
+            """Send a text message to the client."""
+            if not self._closed:
+                await self._send({
+                    'type': 'websocket.send',
+                    'text': message
+                })
+
+        def __aiter__(self):
+            """Async iterator for receiving messages."""
+            return self
+
+        async def __anext__(self):
+            """Receive the next message."""
+            if self._closed:
+                raise StopAsyncIteration
+
+            message = await self._receive()
+            if message['type'] == 'websocket.disconnect':
+                self._closed = True
+                raise StopAsyncIteration
+            elif message['type'] == 'websocket.receive':
+                return message.get('text', message.get('bytes', ''))
+            else:
+                raise StopAsyncIteration
+
+    websocket = ASGIWebSocket(scope, receive, send)
+    _add_connection(tmp_key, websocket)
+    logger.info(f'Connections total: {len(CONNECTIONS)}')
+
+    try:
+        await websocket.send('..:: Hello from the Notification Center ::..')
+        async for message in websocket:
+            try:
+                event = _parse_message(message)
+
+                if event.message == 'connected' and event.recipient_uuid:
+                    logger.info(f'Set UUID: {event.recipient_uuid}')
+                    _remove_connection_by_key(tmp_key)
+                    _add_connection(event.recipient_uuid, websocket)
+                else:
+                    logger.info(f'Message: {event}')
+                    recipient_ws = CONNECTIONS.get(event.recipient_uuid) if event.recipient_uuid else None
+                    if recipient_ws is not None:
+                        await recipient_ws.send(event.message)
+                    else:
+                        logger.warning(f'Connection not found for UUID: {event.recipient_uuid}')
+            except json.JSONDecodeError as e:
+                logger.error(f'JSON decode error: {e}')
+            except Exception as e:
+                logger.error(f'Error processing message: {e}')
+
+    finally:
+        logger.info(f'Disconnected: {tmp_uuid}')
+        _remove_connection_by_ws(websocket)
+        logger.info(f'Connections total: {len(CONNECTIONS)}')
+
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    port_num = int(args[0]) if len(args) > 0 else settings.ws_port
+    asyncio.run(main(port=port_num))
