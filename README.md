@@ -29,6 +29,11 @@ uvicorn main:app --reload
 | `API_KEY_ADMIN` | API-ключ для администраторов      |
 | `UPLOAD_DIR`    | Папка для загружаемых файлов      |
 
+Создать API ключ:
+```bash
+python -c "import uuid; print(uuid.uuid4())"
+```
+
 ## Аутентификация
 
 Передавайте ключ в заголовке `X-API-Key`.

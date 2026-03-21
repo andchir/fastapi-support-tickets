@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class CommentCreate(BaseModel):
@@ -59,3 +59,27 @@ class TicketListItem(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class MessageCreate(BaseModel):
+    owner: str = Field(..., max_length=255)
+    author: str = Field(..., max_length=255)
+    text: str
+
+
+class MessageOut(BaseModel):
+    id: int
+    owner: str
+    author: str
+    text: str
+    created_at: datetime
+    status: str
+
+    model_config = {"from_attributes": True}
+
+
+class MessageListResponse(BaseModel):
+    items: list[MessageOut]
+    total: int
+    page: int
+    page_size: int

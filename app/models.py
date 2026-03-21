@@ -36,3 +36,17 @@ class Comment(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     ticket: Mapped["Ticket"] = relationship("Ticket", back_populates="comments")
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    owner: Mapped[str] = mapped_column(String(255), index=True)
+    author: Mapped[str] = mapped_column(String(255))
+    text: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    status: Mapped[str] = mapped_column(
+        Enum("new", "read", name="message_status"),
+        default="new",
+    )
