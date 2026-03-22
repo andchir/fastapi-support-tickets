@@ -188,7 +188,7 @@ async def register(websocket):
     logger.info(f'Connections total: {len(CONNECTIONS)}')
 
     try:
-        await websocket.send('..:: Hello from the Notification Center ::..')
+        await websocket.send('Connected.')
         async for message in websocket:
             try:
                 event = _parse_message(message)
@@ -341,7 +341,7 @@ async def websocket_handler(scope, receive, send):
     logger.info(f'Connections total: {len(CONNECTIONS)}')
 
     try:
-        await websocket.send('..:: Hello from the Notification Center ::..')
+        await websocket.send('Connected.')
         async for message in websocket:
             try:
                 event = _parse_message(message)
