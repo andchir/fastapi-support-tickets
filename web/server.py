@@ -12,7 +12,7 @@ import asyncio
 import signal
 import json
 import logging
-from typing import Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Union
 from dataclasses import dataclass
 
 try:
@@ -147,7 +147,7 @@ async def _http_not_found(send) -> None:
 @dataclass
 class WebSocketMessage:
     recipient_uuid: Optional[str] = None
-    message: Optional[str] = None
+    message: Union[str, list, dict, None] = None
 
 
 def _add_connection(key: str, websocket) -> None:
@@ -168,6 +168,14 @@ def _remove_connection_by_ws(websocket) -> None:
     key = WS_TO_KEY.pop(id(websocket), None)
     if key is not None:
         CONNECTIONS.pop(key, None)
+
+
+def _serialize_message(message: Union[str, list, dict, None]) -> str:
+    if message is None:
+        return ''
+    if isinstance(message, (list, dict)):
+        return json.dumps(message, ensure_ascii=False)
+    return message
 
 
 def _parse_message(message: str) -> WebSocketMessage:
@@ -201,7 +209,7 @@ async def register(websocket):
                     logger.info(f'Message: {event}')
                     recipient_ws = CONNECTIONS.get(event.recipient_uuid) if event.recipient_uuid else None
                     if recipient_ws is not None:
-                        await recipient_ws.send(event.message)
+                        await recipient_ws.send(_serialize_message(event.message))
                     else:
                         logger.warning(f'Connection not found for UUID: {event.recipient_uuid}')
             except json.JSONDecodeError as e:
@@ -354,7 +362,7 @@ async def websocket_handler(scope, receive, send):
                     logger.info(f'Message: {event}')
                     recipient_ws = CONNECTIONS.get(event.recipient_uuid) if event.recipient_uuid else None
                     if recipient_ws is not None:
-                        await recipient_ws.send(event.message)
+                        await recipient_ws.send(_serialize_message(event.message))
                     else:
                         logger.warning(f'Connection not found for UUID: {event.recipient_uuid}')
             except json.JSONDecodeError as e:
