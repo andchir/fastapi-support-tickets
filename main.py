@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import os
 
@@ -20,6 +21,15 @@ app = FastAPI(
     description="API для тикетов службы поддержки",
     version="1.0.0",
     lifespan=lifespan,
+)
+
+origins = [o.strip() for o in settings.cors_allowed_origins.split(",") if o.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
