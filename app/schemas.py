@@ -78,6 +78,7 @@ class TicketListItem(BaseModel):
     name: str
     email: str
     status: str
+    message: str
     created_at: datetime
     updated_at: datetime
 
