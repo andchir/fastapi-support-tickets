@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 import os
 
 from app.database import init_db
-from app.routers import tickets, comments, admin, messages
+from app.routers import tickets, comments, admin, messages, utils
 from app.config import settings
 
 
@@ -38,6 +38,7 @@ app.include_router(tickets.router, prefix="/tickets", tags=["tickets"])
 app.include_router(comments.router, prefix="/tickets", tags=["comments"])
 app.include_router(admin.router, prefix="/admin/tickets", tags=["admin"])
 app.include_router(messages.router, prefix="/messages", tags=["messages"])
+app.include_router(utils.router, prefix="/utils", tags=["utils"])
 
 
 @app.get("/")
