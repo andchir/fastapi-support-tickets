@@ -10,6 +10,7 @@ class Ticket(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     uuid: Mapped[str] = mapped_column(String(36), unique=True, index=True, default=lambda: str(uuid.uuid4()))
+    topic_uuid: Mapped[str] = mapped_column(String(36), index=True)
     subject: Mapped[str] = mapped_column(String(255))
     name: Mapped[str] = mapped_column(String(255))
     email: Mapped[str] = mapped_column(String(255))

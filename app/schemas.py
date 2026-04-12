@@ -34,6 +34,7 @@ class CommentOut(BaseModel):
 
 
 class TicketCreate(BaseModel):
+    topic_uuid: str
     subject: str
     name: str
     email: str
@@ -43,6 +44,7 @@ class TicketCreate(BaseModel):
 class TicketOut(BaseModel):
     id: int
     uuid: str
+    topic_uuid: str
     subject: str
     name: str
     email: str
@@ -71,6 +73,7 @@ class TicketStatusUpdate(BaseModel):
 class TicketListItem(BaseModel):
     id: int
     uuid: str
+    topic_uuid: str
     subject: str
     name: str
     email: str

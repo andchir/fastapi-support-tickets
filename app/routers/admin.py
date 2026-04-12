@@ -23,13 +23,17 @@ VALID_STATUSES = {"new", "in_progress", "answered", "closed", "deferred"}
 async def list_tickets(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
+    topic_uuid: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
     date_from: Optional[date] = Query(None),
     date_to: Optional[date] = Query(None),
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    filters = []
+    if not topic_uuid:
+        raise HTTPException(status_code=422, detail="topic_uuid is required")
+
+    filters = [Ticket.topic_uuid == topic_uuid]
     if status:
         filters.append(Ticket.status == status)
     if date_from:
