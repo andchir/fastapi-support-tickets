@@ -37,6 +37,7 @@ async def save_upload(file: UploadFile) -> str:
 
 @router.post("", response_model=TicketOut, status_code=201)
 async def create_ticket(
+    topic_uuid: str = Form(...),
     subject: str = Form(...),
     name: str = Form(...),
     email: str = Form(...),
@@ -50,6 +51,7 @@ async def create_ticket(
         file_path = await save_upload(file)
 
     ticket = Ticket(
+        topic_uuid=topic_uuid,
         subject=subject,
         name=name,
         email=email,
