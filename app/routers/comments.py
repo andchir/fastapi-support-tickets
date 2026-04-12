@@ -37,7 +37,7 @@ async def save_upload(file: UploadFile) -> str:
 @router.post("/{ticket_uuid}/comments", response_model=CommentOut, status_code=201)
 async def add_comment(
     ticket_uuid: str,
-    author: str = Form(...),
+    author: str = Form(''),
     text: str = Form(...),
     file: Optional[UploadFile] = File(None),
     db: AsyncSession = Depends(get_db),
