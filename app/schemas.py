@@ -1,6 +1,16 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, model_validator
+
+from app.config import settings
+
+
+def _to_file_url(file_path: Optional[str]) -> Optional[str]:
+    if not file_path:
+        return file_path
+    base = settings.base_url.rstrip("/")
+    path = file_path.lstrip("/")
+    return f"{base}/{path}"
 
 
 class CommentCreate(BaseModel):
@@ -16,6 +26,11 @@ class CommentOut(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+    @model_validator(mode="after")
+    def build_file_url(self):
+        self.file_path = _to_file_url(self.file_path)
+        return self
 
 
 class TicketCreate(BaseModel):
@@ -38,6 +53,11 @@ class TicketOut(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
+    @model_validator(mode="after")
+    def build_file_url(self):
+        self.file_path = _to_file_url(self.file_path)
+        return self
 
 
 class TicketWithComments(TicketOut):

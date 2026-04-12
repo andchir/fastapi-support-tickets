@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     api_key_user: str = "user-secret-key-here"
     api_key_admin: str = "admin-secret-key-here"
     upload_dir: str = "uploads"
+    base_url: str = "http://localhost:8000"
     cors_allowed_origins: str = ""
     ws_port: int = 8765
 
