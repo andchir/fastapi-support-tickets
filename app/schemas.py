@@ -61,6 +61,13 @@ class TicketListItem(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class TicketListResponse(BaseModel):
+    items: list[TicketListItem]
+    total: int
+    page: int
+    page_size: int
+
+
 class MessageCreate(BaseModel):
     owner: str = Field(..., max_length=255)
     author: str = Field(..., max_length=255)

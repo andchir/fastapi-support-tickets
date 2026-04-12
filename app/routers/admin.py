@@ -2,11 +2,16 @@ from datetime import datetime, date
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.database import get_db
 from app.models import Ticket
-from app.schemas import TicketOut, TicketWithComments, TicketStatusUpdate, TicketListItem
+from app.schemas import (
+    TicketOut,
+    TicketWithComments,
+    TicketStatusUpdate,
+    TicketListResponse,
+)
 from app.auth import require_admin_key
 
 router = APIRouter()
@@ -14,24 +19,44 @@ router = APIRouter()
 VALID_STATUSES = {"new", "in_progress", "answered", "closed", "deferred"}
 
 
-@router.get("", response_model=list[TicketListItem])
+@router.get("", response_model=TicketListResponse)
 async def list_tickets(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
     status: Optional[str] = Query(None),
     date_from: Optional[date] = Query(None),
     date_to: Optional[date] = Query(None),
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    stmt = select(Ticket)
+    filters = []
     if status:
-        stmt = stmt.where(Ticket.status == status)
+        filters.append(Ticket.status == status)
     if date_from:
-        stmt = stmt.where(Ticket.created_at >= datetime.combine(date_from, datetime.min.time()))
+        filters.append(Ticket.created_at >= datetime.combine(date_from, datetime.min.time()))
     if date_to:
-        stmt = stmt.where(Ticket.created_at <= datetime.combine(date_to, datetime.max.time()))
-    stmt = stmt.order_by(Ticket.created_at.desc())
+        filters.append(Ticket.created_at <= datetime.combine(date_to, datetime.max.time()))
+
+    base = select(Ticket)
+    count_base = select(func.count()).select_from(Ticket)
+    for cond in filters:
+        base = base.where(cond)
+        count_base = count_base.where(cond)
+
+    total_result = await db.execute(count_base)
+    total = int(total_result.scalar_one())
+
+    offset = (page - 1) * page_size
+    stmt = base.order_by(Ticket.created_at.desc()).offset(offset).limit(page_size)
     result = await db.execute(stmt)
-    return result.scalars().all()
+    items = result.scalars().all()
+
+    return TicketListResponse(
+        items=list(items),
+        total=total,
+        page=page,
+        page_size=page_size,
+    )
 
 
 @router.get("/{ticket_uuid}", response_model=TicketWithComments)
