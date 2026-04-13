@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import String, Text, DateTime, Enum, ForeignKey
+from sqlalchemy import String, Text, DateTime, Enum, ForeignKey  # Enum kept for Message.status
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
@@ -16,10 +16,7 @@ class Ticket(Base):
     email: Mapped[str] = mapped_column(String(255))
     message: Mapped[str] = mapped_column(Text)
     file_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    status: Mapped[str] = mapped_column(
-        Enum("new", "in_progress", "answered", "closed", "deferred", name="ticket_status"),
-        default="new",
-    )
+    status: Mapped[str] = mapped_column(String(50), default="new")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

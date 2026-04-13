@@ -3,6 +3,32 @@ from fastapi import Request
 SUPPORTED_LANGUAGES = {"en", "ru"}
 DEFAULT_LANGUAGE = "en"
 
+VALID_STATUSES = {"new", "in_progress", "answered", "closed", "deferred"}
+VALID_STATUSES_RU = {"Новый", "В процессе", "Получен ответ", "Закрыт", "Отложен"}
+
+# Canonical status name → localized value
+_STATUS_I18N: dict[str, dict[str, str]] = {
+    "en": {
+        "new": "new",
+        "in_progress": "in_progress",
+        "answered": "answered",
+        "closed": "closed",
+        "deferred": "deferred",
+    },
+    "ru": {
+        "new": "Новый",
+        "in_progress": "В процессе",
+        "answered": "Получен ответ",
+        "closed": "Закрыт",
+        "deferred": "Отложен",
+    },
+}
+
+
+def get_status(canonical: str, lang: str) -> str:
+    """Return the localized status value for *canonical* in *lang*."""
+    return _STATUS_I18N.get(lang, _STATUS_I18N[DEFAULT_LANGUAGE]).get(canonical, canonical)
+
 # Keys are used both for HTTPException details (raised in routers/auth)
 # and for Pydantic v2 validation error types.
 TRANSLATIONS: dict[str, dict[str, str]] = {

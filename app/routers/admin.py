@@ -13,12 +13,9 @@ from app.schemas import (
     TicketListResponse,
 )
 from app.auth import require_admin_key
-from app.i18n import get_language
+from app.i18n import get_language, VALID_STATUSES, VALID_STATUSES_RU
 
 router = APIRouter()
-
-VALID_STATUSES = {"new", "in_progress", "answered", "closed", "deferred"}
-VALID_STATUSES_RU = {"Новый", "В процессе", "Получен ответ", "Закрыт", "Отложен"}
 
 
 @router.get("", response_model=TicketListResponse)

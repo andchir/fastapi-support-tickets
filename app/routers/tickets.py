@@ -2,7 +2,7 @@ import os
 import uuid
 from datetime import datetime
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, Query
+from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, Form, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -11,6 +11,7 @@ from app.models import Ticket
 from app.schemas import TicketOut, TicketWithComments, TicketStatusUpdate
 from app.auth import require_user_key
 from app.config import settings
+from app.i18n import get_language, get_status
 
 router = APIRouter()
 
@@ -37,6 +38,7 @@ async def save_upload(file: UploadFile) -> str:
 
 @router.post("", response_model=TicketOut, status_code=201)
 async def create_ticket(
+    request: Request,
     topic_uuid: str = Form(...),
     subject: str = Form(...),
     name: str = Form(...),
@@ -50,6 +52,7 @@ async def create_ticket(
     if file and file.filename:
         file_path = await save_upload(file)
 
+    lang = get_language(request)
     ticket = Ticket(
         topic_uuid=topic_uuid,
         subject=subject,
@@ -57,6 +60,7 @@ async def create_ticket(
         email=email,
         message=message,
         file_path=file_path,
+        status=get_status("new", lang),
     )
     db.add(ticket)
     await db.commit()
@@ -82,6 +86,7 @@ async def get_ticket(
 @router.patch("/{ticket_uuid}/close", response_model=TicketOut)
 async def close_ticket(
     ticket_uuid: str,
+    request: Request,
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_user_key),
 ):
@@ -89,7 +94,8 @@ async def close_ticket(
     ticket = result.scalar_one_or_none()
     if not ticket:
         raise HTTPException(status_code=404, detail="ticket_not_found")
-    ticket.status = "closed"
+    lang = get_language(request)
+    ticket.status = get_status("closed", lang)
     ticket.updated_at = datetime.utcnow()
     await db.commit()
     await db.refresh(ticket)
