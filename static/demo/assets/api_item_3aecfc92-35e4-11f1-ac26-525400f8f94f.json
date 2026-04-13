@@ -1,0 +1,78 @@
+{
+    "url": "https://api2app.org/ru/api/v1/api_items/945",
+    "id": 945,
+    "date_created": "2026-04-11T20:22:58.262394Z",
+    "name": "Служба поддержки - ticket get",
+    "uuid": "3aecfc92-35e4-11f1-ac26-525400f8f94f",
+    "shared": true,
+    "hidden": true,
+    "sender": "browser",
+    "requestContentType": "json",
+    "requestMethod": "GET",
+    "requestUrl": "http://127.0.0.1:8000/tickets/021c90f9-ea9f-480a-9201-152c512a29dc",
+    "basicAuth": false,
+    "bodyDataSource": "fields",
+    "authLogin": "",
+    "authPassword": "",
+    "sendAsFormData": true,
+    "useLocalStorage": false,
+    "dailyLimitUsage": 0,
+    "dailyLimitForUniqueUsers": false,
+    "paidOnly": false,
+    "stream": false,
+    "pricePerUse": 0.0,
+    "bodyContent": null,
+    "bodyContentPrivate": false,
+    "bodyFields": [
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "queryParams": [
+        {
+            "name": "",
+            "value": ""
+        }
+    ],
+    "headers": [
+        {
+            "name": "accept",
+            "value": "application/json",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "X-API-Key",
+            "value": "1ee917a2-fd79-4a12-981c-3bccfc34cd76",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "Content-Type",
+            "value": "multipart/form-data",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "responseBody": "{\n  \"id\": 1,\n  \"uuid\": \"021c90f9-ea9f-480a-9201-152c512a29dc\",\n  \"subject\": \"Тема обращения\",\n  \"name\": \"Андрей\",\n  \"email\": \"user@mail.ru\",\n  \"message\": \"Тут будет вопрос\",\n  \"file_path\": null,\n  \"status\": \"new\",\n  \"created_at\": \"2026-04-12T10:23:53\",\n  \"updated_at\": \"2026-04-12T10:23:53\",\n  \"comments\": [\n    {\n      \"id\": 1,\n      \"author\": \"Поддержка\",\n      \"text\": \"Здравствуйте!\",\n      \"file_path\": null,\n      \"created_at\": \"2026-04-12T10:27:33\"\n    },\n    {\n      \"id\": 3,\n      \"author\": \"Служба поддержки\",\n      \"text\": \"Тут должен быть ответ\",\n      \"file_path\": \"uploads/661c6820-5f25-4186-9c23-83bae214967c.png\",\n      \"created_at\": \"2026-04-12T12:02:18\"\n    }\n  ]\n}",
+    "responseHeaders": [
+        {
+            "name": "content-length",
+            "value": "622"
+        },
+        {
+            "name": "content-type",
+            "value": "application/json"
+        }
+    ],
+    "responseContentType": "json"
+}

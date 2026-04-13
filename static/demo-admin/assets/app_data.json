@@ -1,0 +1,665 @@
+{
+    "url": "https://api2app.org/ru/api/v1/applications/510",
+    "id": 510,
+    "date_created": "2026-04-12T10:46:07.892370Z",
+    "name": "Служба поддержки - админ",
+    "language": "ru",
+    "uuid": "cff35bec-365c-11f1-9783-525400f8f94f",
+    "shared": true,
+    "hidden": true,
+    "maintenance": false,
+    "advertising": false,
+    "adultsOnly": false,
+    "gridColumns": 2,
+    "tabs": [
+        "Обращения",
+        "Сообщения"
+    ],
+    "blocks": [
+        {
+            "options": {
+                "enabled": false,
+                "autoClear": false,
+                "maxHeight": 0,
+                "orderIndex": 0,
+                "showLoading": true,
+                "gridColumnSpan": 1,
+                "messageSuccess": "Сообщение успешно отправлено.",
+                "isStickyPosition": false
+            },
+            "elements": [
+                {
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "header",
+                    "type": "text-header",
+                    "value": "Добавить ответ",
+                    "enabled": true,
+                    "options": {},
+                    "blockIndex": 0,
+                    "orderIndex": 0,
+                    "alignCenter": true,
+                    "hiddenByField": ""
+                },
+                {
+                    "max": 0,
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "ticket_uuid",
+                    "type": "input-text",
+                    "label": "Идентификатор обращения",
+                    "value": "",
+                    "enabled": true,
+                    "options": {
+                        "inputApiUuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+                        "outputApiUuid": null,
+                        "inputApiFieldName": 1,
+                        "inputApiFieldType": "url",
+                        "outputApiFieldName": null,
+                        "outputApiFieldType": null
+                    },
+                    "readOnly": false,
+                    "required": true,
+                    "valueArr": null,
+                    "valueObj": null,
+                    "blockIndex": 0,
+                    "orderIndex": 1,
+                    "prefixText": "",
+                    "storeValue": true,
+                    "suffixText": "",
+                    "placeholder": "Введите идентификатор обращения здесь",
+                    "hiddenByField": "",
+                    "hiddenByDefault": false,
+                    "copyToClipboardEnabled": true,
+                    "speechSynthesisEnabled": false,
+                    "speechRecognitionEnabled": false
+                },
+                {
+                    "name": "hidden_author",
+                    "type": "input-hidden",
+                    "label": "Автор",
+                    "value": "Служба поддержки",
+                    "enabled": true,
+                    "options": {
+                        "inputApiUuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "author",
+                        "inputApiFieldType": "input"
+                    },
+                    "required": true,
+                    "valueFrom": "",
+                    "blockIndex": 0,
+                    "orderIndex": 2,
+                    "prefixText": "",
+                    "storeValue": false,
+                    "suffixText": "",
+                    "hiddenByField": ""
+                },
+                {
+                    "max": 0,
+                    "name": "message",
+                    "rows": 8,
+                    "type": "input-textarea",
+                    "label": "Текст обращения",
+                    "value": "",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "text",
+                        "inputApiFieldType": "input"
+                    },
+                    "readOnly": false,
+                    "required": true,
+                    "autoHeight": false,
+                    "blockIndex": 0,
+                    "orderIndex": 3,
+                    "prefixText": "",
+                    "storeValue": false,
+                    "suffixText": "",
+                    "placeholder": "Введите текст здесь",
+                    "hiddenByField": "",
+                    "hiddenByDefault": false,
+                    "copyToClipboardEnabled": false,
+                    "speechSynthesisEnabled": false,
+                    "speechRecognitionEnabled": true
+                },
+                {
+                    "name": "file",
+                    "type": "input-file",
+                    "label": "Файл",
+                    "value": [],
+                    "accept": "image/*",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "file",
+                        "inputApiFieldType": "input"
+                    },
+                    "multiple": false,
+                    "required": false,
+                    "blockIndex": 0,
+                    "orderIndex": 4,
+                    "placeholder": "Загрузить Файл",
+                    "hiddenByField": "",
+                    "loadValueInto": ""
+                },
+                {
+                    "icon": "bi-send",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "submit",
+                    "text": "Отправить",
+                    "type": "button",
+                    "color": "Blue",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "submit",
+                        "inputApiFieldType": "input"
+                    },
+                    "valueFrom": "",
+                    "blockIndex": 0,
+                    "orderIndex": 5,
+                    "prefixText": "",
+                    "suffixText": "",
+                    "isClearForm": false,
+                    "linkedField": "submit_show_messages",
+                    "hiddenByField": "",
+                    "isDownloadMode": false,
+                    "hiddenByDefault": false,
+                    "isStickyPosition": false
+                },
+                {
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "header",
+                    "type": "text-header",
+                    "value": "Изменить статус",
+                    "enabled": true,
+                    "options": {},
+                    "blockIndex": 0,
+                    "orderIndex": 6,
+                    "alignCenter": true,
+                    "hiddenByField": ""
+                },
+                {
+                    "name": "select_status_update",
+                    "type": "input-select",
+                    "label": "Статус",
+                    "value": "new",
+                    "addTag": false,
+                    "choices": [],
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "88c1b688-368e-11f1-ba1f-525400f8f94f",
+                        "outputApiUuid": "8771717a-35e8-11f1-8df5-525400f8f94f",
+                        "inputApiFieldName": "status",
+                        "inputApiFieldType": "input",
+                        "outputApiFieldName": "status",
+                        "outputApiFieldType": "output"
+                    },
+                    "required": false,
+                    "valueArr": [
+                        {
+                            "name": "Новый",
+                            "value": "Новый"
+                        },
+                        {
+                            "name": "В процессе",
+                            "value": "В процессе"
+                        },
+                        {
+                            "name": "Получен ответ",
+                            "value": "Получен ответ"
+                        },
+                        {
+                            "name": "Закрыт",
+                            "value": "Закрыт"
+                        },
+                        {
+                            "name": "Отложен",
+                            "value": "Отложен"
+                        }
+                    ],
+                    "clearable": false,
+                    "blockIndex": 0,
+                    "orderIndex": 7,
+                    "searchable": false,
+                    "placeholder": "Пожалуйста, выберите статус",
+                    "hiddenByField": "",
+                    "loadValueInto": "",
+                    "hiddenByDefault": false,
+                    "selectDefaultFirst": false,
+                    "itemFieldNameForTitle": "name",
+                    "itemFieldNameForValue": "value"
+                },
+                {
+                    "name": "hidden_ticket_uuid_status_update",
+                    "type": "input-hidden",
+                    "label": "Идентификатор обращения",
+                    "value": "",
+                    "enabled": true,
+                    "options": {
+                        "inputApiUuid": "88c1b688-368e-11f1-ba1f-525400f8f94f",
+                        "inputApiFieldName": 2,
+                        "inputApiFieldType": "url"
+                    },
+                    "required": true,
+                    "valueFrom": "ticket_uuid",
+                    "blockIndex": 0,
+                    "orderIndex": 8,
+                    "prefixText": "",
+                    "storeValue": false,
+                    "suffixText": "",
+                    "hiddenByField": ""
+                },
+                {
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "submit_status_update",
+                    "text": "Изменить статус",
+                    "type": "button",
+                    "color": "Cyan",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "88c1b688-368e-11f1-ba1f-525400f8f94f",
+                        "inputApiFieldName": "submit",
+                        "inputApiFieldType": "input"
+                    },
+                    "valueFrom": "",
+                    "blockIndex": 0,
+                    "orderIndex": 9,
+                    "prefixText": "",
+                    "suffixText": "",
+                    "isClearForm": false,
+                    "linkedField": "submit_show_messages",
+                    "hiddenByField": "",
+                    "isDownloadMode": false,
+                    "hiddenByDefault": false,
+                    "isStickyPosition": false
+                }
+            ],
+            "tabIndex": 1
+        },
+        {
+            "options": {
+                "autoClear": false,
+                "orderIndex": 0,
+                "showLoading": true,
+                "gridColumnSpan": 1,
+                "messageSuccess": "Данные успешно отправлены.",
+                "isStickyPosition": false
+            },
+            "elements": [
+                {
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "header",
+                    "type": "text-header",
+                    "value": "Обращения",
+                    "enabled": true,
+                    "options": {},
+                    "blockIndex": 1,
+                    "orderIndex": 0,
+                    "alignCenter": true,
+                    "hiddenByField": ""
+                },
+                {
+                    "name": "select_status",
+                    "type": "input-select",
+                    "label": "Статус",
+                    "value": "",
+                    "addTag": false,
+                    "choices": [],
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "status",
+                        "inputApiFieldType": "params"
+                    },
+                    "required": false,
+                    "valueArr": [
+                        {
+                            "name": "Новый",
+                            "value": "Новый"
+                        },
+                        {
+                            "name": "В процессе",
+                            "value": "В процессе"
+                        },
+                        {
+                            "name": "Получен ответ",
+                            "value": "Получен ответ"
+                        },
+                        {
+                            "name": "Закрыт",
+                            "value": "Закрыт"
+                        },
+                        {
+                            "name": "Отложен",
+                            "value": "Отложен"
+                        }
+                    ],
+                    "clearable": true,
+                    "blockIndex": 1,
+                    "orderIndex": 1,
+                    "searchable": false,
+                    "placeholder": "Пожалуйста, выберите статус",
+                    "hiddenByField": "",
+                    "loadValueInto": "",
+                    "hiddenByDefault": false,
+                    "selectDefaultFirst": false,
+                    "itemFieldNameForTitle": "name",
+                    "itemFieldNameForValue": "value"
+                },
+                {
+                    "max": 0,
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "topic_uuid",
+                    "type": "input-text",
+                    "label": "Идентификатор отдела (uuid)",
+                    "value": "",
+                    "enabled": true,
+                    "options": {
+                        "inputApiUuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+                        "outputApiUuid": "4bb47dbc-36c4-11f1-a265-525400f8f94f",
+                        "inputApiFieldName": "topic_uuid",
+                        "inputApiFieldType": "params",
+                        "outputApiFieldName": "uuid",
+                        "outputApiFieldType": "output"
+                    },
+                    "readOnly": false,
+                    "required": true,
+                    "blockIndex": 1,
+                    "orderIndex": 2,
+                    "prefixText": "",
+                    "storeValue": true,
+                    "suffixText": "",
+                    "placeholder": "Введите идентификатор отдела здесь",
+                    "hiddenByField": "",
+                    "hiddenByDefault": false,
+                    "copyToClipboardEnabled": true,
+                    "speechSynthesisEnabled": false,
+                    "speechRecognitionEnabled": false
+                },
+                {
+                    "icon": "bi-arrow-repeat",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "submit_view",
+                    "text": "Показать",
+                    "type": "button",
+                    "color": "Green",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "submit",
+                        "inputApiFieldType": "input"
+                    },
+                    "valueFrom": "",
+                    "blockIndex": 1,
+                    "orderIndex": 2,
+                    "prefixText": "",
+                    "suffixText": "",
+                    "isClearForm": false,
+                    "hiddenByField": "",
+                    "isDownloadMode": false,
+                    "hiddenByDefault": false,
+                    "isStickyPosition": false
+                },
+                {
+                    "icon": "bi-dice-3",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "submit_uuid_generate",
+                    "text": "Cгенерировать идентификатор отдела",
+                    "type": "button",
+                    "color": "Cyan",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "4bb47dbc-36c4-11f1-a265-525400f8f94f",
+                        "inputApiFieldName": "submit",
+                        "inputApiFieldType": "input"
+                    },
+                    "valueFrom": "",
+                    "blockIndex": 1,
+                    "orderIndex": 4,
+                    "prefixText": "",
+                    "suffixText": "",
+                    "isClearForm": false,
+                    "linkedField": "",
+                    "hiddenByField": "",
+                    "isDownloadMode": false,
+                    "hiddenByDefault": false,
+                    "isStickyPosition": false
+                },
+                {
+                    "keys": [
+                        "created_at",
+                        "status",
+                        "uuid",
+                        "subject",
+                        "name",
+                        "email",
+                        "message",
+                        "file_path"
+                    ],
+                    "name": "table",
+                    "type": "table",
+                    "label": "",
+                    "isHTML": true,
+                    "enabled": true,
+                    "headers": [
+                        "Время",
+                        "Статус",
+                        "Ид. обращения",
+                        "Тема",
+                        "Имя",
+                        "Эл. алрес",
+                        "Сообщение",
+                        "Файл"
+                    ],
+                    "options": {
+                        "outputApiUuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+                        "outputApiFieldName": "items",
+                        "outputApiFieldType": "output"
+                    },
+                    "editable": false,
+                    "valueArr": null,
+                    "valueObj": null,
+                    "vertical": true,
+                    "blockIndex": 1,
+                    "orderIndex": 3,
+                    "hiddenByField": "",
+                    "hiddenByDefault": true
+                },
+                {
+                    "name": "pages",
+                    "note": "Пожалуйста, выберите поле с номером страницы.",
+                    "type": "input-pagination",
+                    "value": 1,
+                    "enabled": false,
+                    "maxSize": 9,
+                    "options": {
+                        "inputApiUuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+                        "outputApiUuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+                        "inputApiFieldName": "page",
+                        "inputApiFieldType": "params",
+                        "outputApiFieldName": "total",
+                        "outputApiFieldType": "output"
+                    },
+                    "perPage": 20,
+                    "autoHide": true,
+                    "valueArr": null,
+                    "valueObj": {
+                        "id": "pages",
+                        "totalItems": 100,
+                        "currentPage": 1,
+                        "itemsPerPage": 20
+                    },
+                    "blockIndex": 1,
+                    "noteOutput": "Пожалуйста, выберите поле с выводом количества записей.",
+                    "orderIndex": 4,
+                    "useAsOffset": false
+                }
+            ],
+            "tabIndex": 0
+        },
+        {
+            "options": {
+                "enabled": false,
+                "autoClear": false,
+                "maxHeight": 0,
+                "orderIndex": 2,
+                "showLoading": true,
+                "gridColumnSpan": 1,
+                "messageSuccess": "Данные успешно отправлены.",
+                "isStickyPosition": false
+            },
+            "elements": [
+                {
+                    "icon": "",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "header",
+                    "type": "text-header",
+                    "value": "Сообщения",
+                    "enabled": true,
+                    "options": {},
+                    "blockIndex": 2,
+                    "orderIndex": 0,
+                    "alignCenter": true,
+                    "hiddenByField": ""
+                },
+                {
+                    "name": "hidden_ticket_uuid",
+                    "type": "input-hidden",
+                    "label": "Идентификатор обращения",
+                    "value": "",
+                    "enabled": true,
+                    "options": {
+                        "inputApiUuid": "8771717a-35e8-11f1-8df5-525400f8f94f",
+                        "inputApiFieldName": 2,
+                        "inputApiFieldType": "url"
+                    },
+                    "required": true,
+                    "valueFrom": "ticket_uuid",
+                    "blockIndex": 2,
+                    "orderIndex": 1,
+                    "prefixText": "",
+                    "storeValue": false,
+                    "suffixText": "",
+                    "hiddenByField": ""
+                },
+                {
+                    "icon": "bi-arrow-repeat",
+                    "info": "[Bootstrap Icons](https://icons.getbootstrap.com/)",
+                    "name": "submit_show_messages",
+                    "text": "Показать",
+                    "type": "button",
+                    "color": "Green",
+                    "enabled": false,
+                    "options": {
+                        "inputApiUuid": "8771717a-35e8-11f1-8df5-525400f8f94f",
+                        "inputApiFieldName": "submit",
+                        "inputApiFieldType": "input"
+                    },
+                    "valueFrom": "",
+                    "blockIndex": 2,
+                    "orderIndex": 2,
+                    "prefixText": "",
+                    "suffixText": "",
+                    "isClearForm": false,
+                    "linkedField": "",
+                    "hiddenByField": "",
+                    "isDownloadMode": false,
+                    "hiddenByDefault": false,
+                    "isStickyPosition": false
+                },
+                {
+                    "keys": [
+                        "created_at",
+                        "status",
+                        "uuid",
+                        "subject",
+                        "name",
+                        "email",
+                        "message",
+                        "file_path"
+                    ],
+                    "name": "table",
+                    "type": "table",
+                    "label": "",
+                    "isHTML": true,
+                    "enabled": true,
+                    "headers": [
+                        "Время",
+                        "Статус",
+                        "Ид. обращения",
+                        "Тема",
+                        "Имя",
+                        "Эл. алрес",
+                        "Сообщение",
+                        "Файл"
+                    ],
+                    "options": {
+                        "inputApiUuid": null,
+                        "outputApiUuid": "8771717a-35e8-11f1-8df5-525400f8f94f",
+                        "inputApiFieldName": null,
+                        "inputApiFieldType": null,
+                        "outputApiFieldName": "value",
+                        "outputApiFieldType": "output"
+                    },
+                    "editable": false,
+                    "valueArr": null,
+                    "valueObj": null,
+                    "vertical": true,
+                    "blockIndex": 2,
+                    "orderIndex": 3,
+                    "hiddenByField": "",
+                    "hiddenByDefault": true
+                },
+                {
+                    "keys": [
+                        "created_at",
+                        "author",
+                        "text",
+                        "file_path"
+                    ],
+                    "name": "table",
+                    "type": "table",
+                    "label": "Сообщения",
+                    "isHTML": true,
+                    "enabled": true,
+                    "headers": [
+                        "Время",
+                        "Автор",
+                        "Текст",
+                        "Файл"
+                    ],
+                    "options": {
+                        "outputApiUuid": "8771717a-35e8-11f1-8df5-525400f8f94f",
+                        "outputApiFieldName": "comments",
+                        "outputApiFieldType": "output"
+                    },
+                    "editable": false,
+                    "valueArr": null,
+                    "valueObj": null,
+                    "vertical": true,
+                    "blockIndex": 2,
+                    "orderIndex": 4,
+                    "hiddenByField": "",
+                    "hiddenByDefault": true
+                }
+            ],
+            "tabIndex": 1
+        }
+    ],
+    "image": "https://api2app.org/media/images/image-RItzmUmXDJtPY2YOnwJ38jr4Ft76YM_9L9LeFO.png",
+    "vkAppId": "",
+    "vkSecretKey": "",
+    "vkToken": "",
+    "tgBotToken": "",
+    "tgForwardToUserId": "",
+    "tgKeyWord": "",
+    "paymentEnabled": false,
+    "pricePerUse": null,
+    "gupshupApiKey": "",
+    "favorite": false
+}

@@ -1,0 +1,93 @@
+{
+    "url": "https://api2app.org/ru/api/v1/api_items/948",
+    "id": 948,
+    "date_created": "2026-04-11T20:54:47.783449Z",
+    "name": "Служба поддержки - comment - create",
+    "uuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+    "shared": true,
+    "hidden": true,
+    "sender": "browser",
+    "requestContentType": "json",
+    "requestMethod": "POST",
+    "requestUrl": "http://127.0.0.1:8000/tickets/c5ac3e58-d43d-46bd-840a-3a7f05d8dcd2/comments",
+    "basicAuth": false,
+    "bodyDataSource": "fields",
+    "authLogin": "",
+    "authPassword": "",
+    "sendAsFormData": true,
+    "useLocalStorage": false,
+    "dailyLimitUsage": 0,
+    "dailyLimitForUniqueUsers": false,
+    "paidOnly": false,
+    "stream": false,
+    "pricePerUse": 0.0,
+    "bodyContent": null,
+    "bodyContentPrivate": false,
+    "bodyFields": [
+        {
+            "name": "author",
+            "value": "Иван",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "text",
+            "value": "Тут будет текст",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "file",
+            "value": "",
+            "hidden": false,
+            "isFile": true,
+            "private": false
+        },
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "queryParams": [
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "headers": [
+        {
+            "name": "accept",
+            "value": "application/json",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "X-API-Key",
+            "value": "1ee917a2-fd79-4a12-981c-3bccfc34cd76",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "responseBody": "{\n  \"id\": 14,\n  \"author\": \"Иван\",\n  \"text\": \"Тут будет текст\",\n  \"file_path\": null,\n  \"created_at\": \"2026-04-12T23:11:58\"\n}",
+    "responseHeaders": [
+        {
+            "name": "content-length",
+            "value": "119"
+        },
+        {
+            "name": "content-type",
+            "value": "application/json"
+        }
+    ],
+    "responseContentType": "json"
+}

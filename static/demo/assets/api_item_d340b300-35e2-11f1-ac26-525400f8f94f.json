@@ -1,0 +1,119 @@
+{
+    "url": "https://api2app.org/ru/api/v1/api_items/944",
+    "id": 944,
+    "date_created": "2026-04-11T20:12:54.831453Z",
+    "name": "Служба поддержки - tickets post",
+    "uuid": "d340b300-35e2-11f1-ac26-525400f8f94f",
+    "shared": true,
+    "hidden": true,
+    "sender": "browser",
+    "requestContentType": "json",
+    "requestMethod": "POST",
+    "requestUrl": "http://127.0.0.1:8000/tickets",
+    "basicAuth": false,
+    "bodyDataSource": "fields",
+    "authLogin": "",
+    "authPassword": "",
+    "sendAsFormData": true,
+    "useLocalStorage": false,
+    "dailyLimitUsage": 0,
+    "dailyLimitForUniqueUsers": false,
+    "paidOnly": false,
+    "stream": false,
+    "pricePerUse": 0.0,
+    "bodyContent": null,
+    "bodyContentPrivate": false,
+    "bodyFields": [
+        {
+            "name": "subject",
+            "value": "Тема обращения",
+            "hidden": false,
+            "isFile": false,
+            "private": false
+        },
+        {
+            "name": "name",
+            "value": "Андрей",
+            "hidden": false,
+            "isFile": false,
+            "private": false
+        },
+        {
+            "name": "email",
+            "value": "user@mail.ru",
+            "hidden": false,
+            "isFile": false,
+            "private": false
+        },
+        {
+            "name": "message",
+            "value": "Тут будет вопрос",
+            "hidden": false,
+            "isFile": false,
+            "private": false
+        },
+        {
+            "name": "file",
+            "value": "",
+            "hidden": false,
+            "isFile": true,
+            "private": false
+        },
+        {
+            "name": "topic_uuid",
+            "value": "",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "queryParams": [
+        {
+            "name": "",
+            "value": ""
+        }
+    ],
+    "headers": [
+        {
+            "name": "accept",
+            "value": "application/json",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "X-API-Key",
+            "value": "1ee917a2-fd79-4a12-981c-3bccfc34cd76",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "Content-Type",
+            "value": "multipart/form-data",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "responseBody": "{\n  \"id\": 2,\n  \"uuid\": \"e9c2a46d-00e2-4c32-ab34-0b4934c5346f\",\n  \"subject\": \"Тема обращения\",\n  \"name\": \"Андрей\",\n  \"email\": \"user@mail.ru\",\n  \"message\": \"Тут будет вопрос\",\n  \"file_path\": null,\n  \"status\": \"new\",\n  \"created_at\": \"2026-04-12T11:00:28\",\n  \"updated_at\": \"2026-04-12T11:00:28\"\n}",
+    "responseHeaders": [
+        {
+            "name": "content-length",
+            "value": "284"
+        },
+        {
+            "name": "content-type",
+            "value": "application/json"
+        }
+    ],
+    "responseContentType": "json"
+}

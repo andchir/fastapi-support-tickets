@@ -1,0 +1,90 @@
+{
+    "url": "https://api2app.org/ru/api/v1/api_items/946",
+    "id": 946,
+    "date_created": "2026-04-11T20:52:43.896274Z",
+    "name": "Служба поддержки - admin - tickets list",
+    "uuid": "633f0f24-35e8-11f1-b24f-525400f8f94f",
+    "shared": true,
+    "hidden": true,
+    "sender": "browser",
+    "requestContentType": "json",
+    "requestMethod": "GET",
+    "requestUrl": "http://127.0.0.1:8000/admin/tickets",
+    "basicAuth": false,
+    "bodyDataSource": "fields",
+    "authLogin": "",
+    "authPassword": "",
+    "sendAsFormData": false,
+    "useLocalStorage": false,
+    "dailyLimitUsage": 0,
+    "dailyLimitForUniqueUsers": false,
+    "paidOnly": false,
+    "stream": false,
+    "pricePerUse": 0.0,
+    "bodyContent": null,
+    "bodyContentPrivate": false,
+    "bodyFields": [
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "queryParams": [
+        {
+            "name": "status",
+            "value": "new",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "page_size",
+            "value": "10"
+        },
+        {
+            "name": "page",
+            "value": "1"
+        },
+        {
+            "name": "topic_uuid",
+            "value": ""
+        },
+        {
+            "name": "",
+            "value": ""
+        }
+    ],
+    "headers": [
+        {
+            "name": "accept",
+            "value": "application/json",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "X-API-Key",
+            "value": "8c4f063d-387a-47b2-af07-bee1e96ebc42",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "",
+            "value": "",
+            "hidden": false,
+            "private": false
+        }
+    ],
+    "responseBody": "{\n  \"items\": [\n    {\n      \"id\": 26,\n      \"uuid\": \"2b9bef08-b743-4332-ae8f-234c0327ace4\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T13:10:58\",\n      \"updated_at\": \"2026-04-12T13:10:58\"\n    },\n    {\n      \"id\": 25,\n      \"uuid\": \"5490e761-1c01-46bb-951a-601d071ada44\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T13:09:14\",\n      \"updated_at\": \"2026-04-12T13:09:14\"\n    },\n    {\n      \"id\": 24,\n      \"uuid\": \"f8dd38fa-6b26-4f50-8472-0b455a3d3ba9\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T13:08:42\",\n      \"updated_at\": \"2026-04-12T13:08:42\"\n    },\n    {\n      \"id\": 23,\n      \"uuid\": \"a7fbc4fb-8123-4563-ad08-e5a7eda166fe\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:44:40\",\n      \"updated_at\": \"2026-04-12T12:44:40\"\n    },\n    {\n      \"id\": 22,\n      \"uuid\": \"3888464d-f57b-4547-84cc-f9a590d13e59\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:44:27\",\n      \"updated_at\": \"2026-04-12T12:44:27\"\n    },\n    {\n      \"id\": 21,\n      \"uuid\": \"70eabcc2-6165-4930-8788-059e847e1ed0\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:07:44\",\n      \"updated_at\": \"2026-04-12T12:07:44\"\n    },\n    {\n      \"id\": 20,\n      \"uuid\": \"8b28af17-5345-4d58-8573-143b6f22c0ca\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:01:35\",\n      \"updated_at\": \"2026-04-12T12:01:35\"\n    },\n    {\n      \"id\": 19,\n      \"uuid\": \"4747fe06-d360-47a3-9984-3c290935515a\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:01:16\",\n      \"updated_at\": \"2026-04-12T12:01:16\"\n    },\n    {\n      \"id\": 18,\n      \"uuid\": \"fe16d1c7-77de-4f93-bcc0-ab5b9a9c0f66\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:01:05\",\n      \"updated_at\": \"2026-04-12T12:01:05\"\n    },\n    {\n      \"id\": 17,\n      \"uuid\": \"61ddd8c7-a99f-4459-b3ca-8c53dbcbcad6\",\n      \"subject\": \"Тема обращения\",\n      \"name\": \"Андрей\",\n      \"email\": \"user@mail.ru\",\n      \"status\": \"new\",\n      \"created_at\": \"2026-04-12T12:00:44\",\n      \"updated_at\": \"2026-04-12T12:00:44\"\n    }\n  ],\n  \"total\": 26,\n  \"page\": 1,\n  \"page_size\": 10\n}",
+    "responseHeaders": [
+        {
+            "name": "content-length",
+            "value": "2306"
+        },
+        {
+            "name": "content-type",
+            "value": "application/json"
+        }
+    ],
+    "responseContentType": "json"
+}

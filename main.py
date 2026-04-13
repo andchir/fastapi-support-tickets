@@ -37,6 +37,8 @@ app.add_middleware(
 )
 
 app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
+app.mount("/demo", StaticFiles(directory="static/demo", html=True), name="demo")
+app.mount("/demo-admin", StaticFiles(directory="static/demo-admin", html=True), name="demo-admin")
 
 
 @app.exception_handler(RequestValidationError)
