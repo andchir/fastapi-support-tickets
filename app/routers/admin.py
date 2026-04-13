@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
 
@@ -13,10 +13,12 @@ from app.schemas import (
     TicketListResponse,
 )
 from app.auth import require_admin_key
+from app.i18n import get_language
 
 router = APIRouter()
 
 VALID_STATUSES = {"new", "in_progress", "answered", "closed", "deferred"}
+VALID_STATUSES_RU = {"Новый", "В процессе", "Получен ответ", "Закрыт", "Отложен"}
 
 
 @router.get("", response_model=TicketListResponse)
@@ -31,7 +33,7 @@ async def list_tickets(
     _: str = Depends(require_admin_key),
 ):
     if not topic_uuid:
-        raise HTTPException(status_code=422, detail="topic_uuid is required")
+        raise HTTPException(status_code=422, detail="topic_uuid_required")
 
     filters = [Ticket.topic_uuid == topic_uuid]
     if status:
@@ -72,7 +74,7 @@ async def get_ticket_admin(
     result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
     ticket = result.scalar_one_or_none()
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise HTTPException(status_code=404, detail="ticket_not_found")
     await db.refresh(ticket, ["comments"])
     return ticket
 
@@ -81,15 +83,21 @@ async def get_ticket_admin(
 async def update_ticket_status(
     ticket_uuid: str,
     body: TicketStatusUpdate,
+    request: Request,
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    if body.status not in VALID_STATUSES:
-        raise HTTPException(status_code=400, detail=f"Invalid status. Valid values: {', '.join(VALID_STATUSES)}")
+    lang = get_language(request)
+    valid = VALID_STATUSES_RU if lang == "ru" else VALID_STATUSES
+    if body.status not in valid:
+        raise HTTPException(
+            status_code=400,
+            detail={"key": "invalid_status", "ctx": {"values": ", ".join(sorted(valid))}},
+        )
     result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
     ticket = result.scalar_one_or_none()
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise HTTPException(status_code=404, detail="ticket_not_found")
     ticket.status = body.status
     ticket.updated_at = datetime.utcnow()
     await db.commit()

@@ -42,7 +42,7 @@ async def list_messages(
     if status is not None and status not in VALID_STATUSES:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid status. Valid values: {', '.join(sorted(VALID_STATUSES))}",
+            detail={"key": "invalid_status", "ctx": {"values": ", ".join(sorted(VALID_STATUSES))}},
         )
 
     filters = []

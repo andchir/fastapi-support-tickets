@@ -23,7 +23,7 @@ async def save_upload(file: UploadFile) -> str:
     if not any(content_type.startswith(prefix) for prefix in ALLOWED_MIME_PREFIXES):
         raise HTTPException(
             status_code=400,
-            detail="Only image and video files are allowed",
+            detail="only_image_video_allowed",
         )
     ext = os.path.splitext(file.filename)[1]
     filename = f"{uuid.uuid4()}{ext}"
@@ -73,7 +73,7 @@ async def get_ticket(
     result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
     ticket = result.scalar_one_or_none()
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise HTTPException(status_code=404, detail="ticket_not_found")
     # eagerly load comments
     await db.refresh(ticket, ["comments"])
     return ticket
@@ -88,7 +88,7 @@ async def close_ticket(
     result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
     ticket = result.scalar_one_or_none()
     if not ticket:
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise HTTPException(status_code=404, detail="ticket_not_found")
     ticket.status = "closed"
     ticket.updated_at = datetime.utcnow()
     await db.commit()

@@ -1,12 +1,16 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from contextlib import asynccontextmanager
 import os
 
 from app.database import init_db
 from app.routers import tickets, comments, admin, messages, utils
 from app.config import settings
+from app.i18n import get_language, translate_http_detail, translate_validation_errors
 
 
 @asynccontextmanager
@@ -33,6 +37,22 @@ app.add_middleware(
 )
 
 app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    lang = get_language(request)
+    translated = translate_validation_errors(exc.errors(), lang)
+    return JSONResponse(status_code=422, content={"detail": translated})
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
+    lang = get_language(request)
+    detail = translate_http_detail(exc.detail, lang)
+    headers = getattr(exc, "headers", None)
+    return JSONResponse(status_code=exc.status_code, content={"detail": detail}, headers=headers)
+
 
 app.include_router(tickets.router, prefix="/tickets", tags=["tickets"])
 app.include_router(comments.router, prefix="/tickets", tags=["comments"])
