@@ -68,6 +68,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "json_invalid": "JSON decode error, {error}",
         "json_type": "JSON input should be string, bytes or bytearray",
         "extra_forbidden": "Extra inputs are not permitted",
+        "owner_not_found": "Technical support department not found"
     },
     "ru": {
         # ── HTTP exception messages ────────────────────────────────────────
@@ -105,6 +106,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "json_invalid": "Ошибка разбора JSON: {error}",
         "json_type": "JSON-данные должны быть строкой, байтами или массивом байтов",
         "extra_forbidden": "Дополнительные поля не допускаются",
+        "owner_not_found": "Отдел технической поддержки не найден"
     },
 }
 
