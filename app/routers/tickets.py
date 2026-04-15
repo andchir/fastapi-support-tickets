@@ -6,8 +6,10 @@ from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
+from sqlalchemy.orm import selectinload
+
 from app.database import get_db
-from app.models import Ticket
+from app.models import Owner, Ticket
 from app.schemas import TicketOut, TicketWithComments, TicketStatusUpdate
 from app.auth import require_user_key
 from app.config import settings
@@ -39,7 +41,7 @@ async def save_upload(file: UploadFile) -> str:
 @router.post("", response_model=TicketOut, status_code=201)
 async def create_ticket(
     request: Request,
-    topic_uuid: str = Form(...),
+    owner_uuid: str = Form(...),
     subject: str = Form(...),
     name: str = Form(...),
     email: str = Form(...),
@@ -48,13 +50,18 @@ async def create_ticket(
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_user_key),
 ):
+    owner_result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    owner = owner_result.scalar_one_or_none()
+    if not owner:
+        raise HTTPException(status_code=404, detail="owner_not_found")
+
     file_path = None
     if file and file.filename:
         file_path = await save_upload(file)
 
     lang = get_language(request)
     ticket = Ticket(
-        topic_uuid=topic_uuid,
+        owner_id=owner.id,
         subject=subject,
         name=name,
         email=email,
@@ -65,6 +72,7 @@ async def create_ticket(
     db.add(ticket)
     await db.commit()
     await db.refresh(ticket)
+    await db.refresh(ticket, ["owner"])
     return ticket
 
 
@@ -74,12 +82,14 @@ async def get_ticket(
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_user_key),
 ):
-    result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
+    result = await db.execute(
+        select(Ticket)
+        .where(Ticket.uuid == ticket_uuid)
+        .options(selectinload(Ticket.owner), selectinload(Ticket.comments))
+    )
     ticket = result.scalar_one_or_none()
     if not ticket:
         raise HTTPException(status_code=404, detail="ticket_not_found")
-    # eagerly load comments
-    await db.refresh(ticket, ["comments"])
     return ticket
 
 
@@ -90,7 +100,11 @@ async def close_ticket(
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_user_key),
 ):
-    result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
+    result = await db.execute(
+        select(Ticket)
+        .where(Ticket.uuid == ticket_uuid)
+        .options(selectinload(Ticket.owner))
+    )
     ticket = result.scalar_one_or_none()
     if not ticket:
         raise HTTPException(status_code=404, detail="ticket_not_found")

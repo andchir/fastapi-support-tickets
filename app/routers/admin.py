@@ -3,9 +3,10 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
+from sqlalchemy.orm import selectinload
 
 from app.database import get_db
-from app.models import Ticket
+from app.models import Owner, Ticket
 from app.schemas import (
     TicketOut,
     TicketWithComments,
@@ -22,17 +23,22 @@ router = APIRouter()
 async def list_tickets(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
-    topic_uuid: Optional[str] = Query(None),
+    owner_uuid: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
     date_from: Optional[date] = Query(None),
     date_to: Optional[date] = Query(None),
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    if not topic_uuid:
-        raise HTTPException(status_code=422, detail="topic_uuid_required")
+    if not owner_uuid:
+        raise HTTPException(status_code=422, detail="owner_uuid_required")
 
-    filters = [Ticket.topic_uuid == topic_uuid]
+    owner_result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    owner = owner_result.scalar_one_or_none()
+    if not owner:
+        raise HTTPException(status_code=404, detail="owner_not_found")
+
+    filters = [Ticket.owner_id == owner.id]
     if status:
         filters.append(Ticket.status == status)
     if date_from:
@@ -40,7 +46,7 @@ async def list_tickets(
     if date_to:
         filters.append(Ticket.created_at <= datetime.combine(date_to, datetime.max.time()))
 
-    base = select(Ticket)
+    base = select(Ticket).options(selectinload(Ticket.owner))
     count_base = select(func.count()).select_from(Ticket)
     for cond in filters:
         base = base.where(cond)
@@ -68,11 +74,14 @@ async def get_ticket_admin(
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
+    result = await db.execute(
+        select(Ticket)
+        .where(Ticket.uuid == ticket_uuid)
+        .options(selectinload(Ticket.owner), selectinload(Ticket.comments))
+    )
     ticket = result.scalar_one_or_none()
     if not ticket:
         raise HTTPException(status_code=404, detail="ticket_not_found")
-    await db.refresh(ticket, ["comments"])
     return ticket
 
 
@@ -91,7 +100,11 @@ async def update_ticket_status(
             status_code=400,
             detail={"key": "invalid_status", "ctx": {"values": ", ".join(sorted(valid))}},
         )
-    result = await db.execute(select(Ticket).where(Ticket.uuid == ticket_uuid))
+    result = await db.execute(
+        select(Ticket)
+        .where(Ticket.uuid == ticket_uuid)
+        .options(selectinload(Ticket.owner))
+    )
     ticket = result.scalar_one_or_none()
     if not ticket:
         raise HTTPException(status_code=404, detail="ticket_not_found")

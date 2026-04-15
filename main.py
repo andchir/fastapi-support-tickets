@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 import os
 
 from app.database import init_db
-from app.routers import tickets, comments, admin, messages, utils
+from app.routers import tickets, comments, admin, messages, utils, owners
 from app.config import settings
 from app.i18n import get_language, translate_http_detail, translate_validation_errors
 
@@ -59,6 +59,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
 app.include_router(tickets.router, prefix="/tickets", tags=["tickets"])
 app.include_router(comments.router, prefix="/tickets", tags=["comments"])
 app.include_router(admin.router, prefix="/admin/tickets", tags=["admin"])
+app.include_router(owners.router, prefix="/admin/owners", tags=["owners"])
 app.include_router(messages.router, prefix="/messages", tags=["messages"])
 app.include_router(utils.router, prefix="/utils", tags=["utils"])
 

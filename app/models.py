@@ -5,12 +5,22 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
 
+class Owner(Base):
+    __tablename__ = "owners"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    uuid: Mapped[str] = mapped_column(String(36), unique=True, index=True, default=lambda: str(uuid.uuid4()))
+    name: Mapped[str] = mapped_column(String(255))
+
+    tickets: Mapped[list["Ticket"]] = relationship("Ticket", back_populates="owner", cascade="all, delete-orphan")
+
+
 class Ticket(Base):
     __tablename__ = "tickets"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     uuid: Mapped[str] = mapped_column(String(36), unique=True, index=True, default=lambda: str(uuid.uuid4()))
-    topic_uuid: Mapped[str] = mapped_column(String(36), index=True)
+    owner_id: Mapped[int] = mapped_column(ForeignKey("owners.id", ondelete="CASCADE"), index=True)
     subject: Mapped[str] = mapped_column(String(255))
     name: Mapped[str] = mapped_column(String(255))
     email: Mapped[str] = mapped_column(String(255))
@@ -20,7 +30,14 @@ class Ticket(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    owner: Mapped["Owner"] = relationship("Owner", back_populates="tickets")
     comments: Mapped[list["Comment"]] = relationship("Comment", back_populates="ticket", cascade="all, delete-orphan")
+
+    @property
+    def owner_uuid(self) -> str | None:
+        if self.owner:
+            return self.owner.uuid
+        return None
 
 
 class Comment(Base):

@@ -33,8 +33,30 @@ class CommentOut(BaseModel):
         return self
 
 
+class OwnerCreate(BaseModel):
+    name: str = Field(..., max_length=255)
+
+
+class OwnerUpdate(BaseModel):
+    name: str = Field(..., max_length=255)
+
+
+class OwnerOut(BaseModel):
+    uuid: str
+    name: str
+
+    model_config = {"from_attributes": True}
+
+
+class OwnerListResponse(BaseModel):
+    items: list[OwnerOut]
+    total: int
+    page: int
+    page_size: int
+
+
 class TicketCreate(BaseModel):
-    topic_uuid: str
+    owner_uuid: str
     subject: str
     name: str
     email: str
@@ -44,7 +66,7 @@ class TicketCreate(BaseModel):
 class TicketOut(BaseModel):
     id: int
     uuid: str
-    topic_uuid: str
+    owner_uuid: Optional[str] = None
     subject: str
     name: str
     email: str
@@ -73,7 +95,7 @@ class TicketStatusUpdate(BaseModel):
 class TicketListItem(BaseModel):
     id: int
     uuid: str
-    topic_uuid: str
+    owner_uuid: Optional[str] = None
     subject: str
     name: str
     email: str
