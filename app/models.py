@@ -10,7 +10,9 @@ class Owner(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     uuid: Mapped[str] = mapped_column(String(36), unique=True, index=True, default=lambda: str(uuid.uuid4()))
+    access_key: Mapped[str] = mapped_column(String(36), unique=True, index=True, default=lambda: str(uuid.uuid4()))
     name: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str | None] = mapped_column(String(1000), nullable=True)
 
     tickets: Mapped[list["Ticket"]] = relationship("Ticket", back_populates="owner", cascade="all, delete-orphan")
 

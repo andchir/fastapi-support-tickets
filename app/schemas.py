@@ -35,15 +35,19 @@ class CommentOut(BaseModel):
 
 class OwnerCreate(BaseModel):
     name: str = Field(..., max_length=255)
+    description: Optional[str] = Field(None, max_length=1000)
 
 
 class OwnerUpdate(BaseModel):
     name: str = Field(..., max_length=255)
+    description: Optional[str] = Field(None, max_length=1000)
 
 
 class OwnerOut(BaseModel):
     uuid: str
+    access_key: str
     name: str
+    description: Optional[str] = None
 
     model_config = {"from_attributes": True}
 

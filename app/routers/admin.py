@@ -23,20 +23,19 @@ router = APIRouter()
 async def list_tickets(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
-    owner_uuid: Optional[str] = Query(None),
+    access_key: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
     date_from: Optional[date] = Query(None),
     date_to: Optional[date] = Query(None),
     db: AsyncSession = Depends(get_db),
-    _: str = Depends(require_admin_key),
 ):
-    if not owner_uuid:
-        raise HTTPException(status_code=422, detail="owner_uuid_required")
+    if not access_key:
+        raise HTTPException(status_code=422, detail="access_key_required")
 
-    owner_result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    owner_result = await db.execute(select(Owner).where(Owner.access_key == access_key))
     owner = owner_result.scalar_one_or_none()
     if not owner:
-        raise HTTPException(status_code=404, detail="owner_not_found")
+        raise HTTPException(status_code=403, detail="invalid_access_key")
 
     filters = [Ticket.owner_id == owner.id]
     if status:

@@ -16,7 +16,7 @@ async def create_owner(
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    owner = Owner(name=body.name)
+    owner = Owner(name=body.name, description=body.description)
     db.add(owner)
     await db.commit()
     await db.refresh(owner)
@@ -48,6 +48,7 @@ async def update_owner(
     if not owner:
         raise HTTPException(status_code=404, detail="owner_not_found")
     owner.name = body.name
+    owner.description = body.description
     await db.commit()
     await db.refresh(owner)
     return owner

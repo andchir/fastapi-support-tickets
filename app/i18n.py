@@ -41,6 +41,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "invalid_api_key": "Invalid API key",
         "admin_api_key_required": "Admin API key required",
         "owner_not_found": "Technical support department not found",
+        "owner_uuid_required": "owner_uuid is required",
+        "access_key_required": "access_key is required",
+        "invalid_access_key": "Invalid access key",
 
         # ── Pydantic v2 validation error types ────────────────────────────
         "missing": "Field required",
@@ -79,6 +82,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "invalid_api_key": "Неверный API-ключ",
         "admin_api_key_required": "Требуется API-ключ администратора",
         "owner_not_found": "Отдел технической поддержки не найден",
+        "owner_uuid_required": "Параметр owner_uuid обязателен",
+        "access_key_required": "Параметр access_key обязателен",
+        "invalid_access_key": "Неверный ключ доступа",
 
         # ── Pydantic v2 validation error types ────────────────────────────
         "missing": "Обязательное поле",
