@@ -40,6 +40,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "invalid_status": "Invalid status. Valid values: {values}",
         "invalid_api_key": "Invalid API key",
         "admin_api_key_required": "Admin API key required",
+        "owner_not_found": "Technical support department not found",
 
         # ── Pydantic v2 validation error types ────────────────────────────
         "missing": "Field required",
@@ -67,8 +68,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "email_type": "Value is not a valid email address",
         "json_invalid": "JSON decode error, {error}",
         "json_type": "JSON input should be string, bytes or bytearray",
-        "extra_forbidden": "Extra inputs are not permitted",
-        "owner_not_found": "Technical support department not found"
+        "extra_forbidden": "Extra inputs are not permitted"
     },
     "ru": {
         # ── HTTP exception messages ────────────────────────────────────────
@@ -78,6 +78,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "invalid_status": "Недопустимый статус. Допустимые значения: {values}",
         "invalid_api_key": "Неверный API-ключ",
         "admin_api_key_required": "Требуется API-ключ администратора",
+        "owner_not_found": "Отдел технической поддержки не найден",
 
         # ── Pydantic v2 validation error types ────────────────────────────
         "missing": "Обязательное поле",
@@ -105,8 +106,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "email_type": "Некорректный адрес электронной почты",
         "json_invalid": "Ошибка разбора JSON: {error}",
         "json_type": "JSON-данные должны быть строкой, байтами или массивом байтов",
-        "extra_forbidden": "Дополнительные поля не допускаются",
-        "owner_not_found": "Отдел технической поддержки не найден"
+        "extra_forbidden": "Дополнительные поля не допускаются"
     },
 }
 
