@@ -52,6 +52,14 @@ class OwnerOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class OwnerPublicOut(BaseModel):
+    uuid: str
+    name: str
+    description: Optional[str] = None
+
+    model_config = {"from_attributes": True}
+
+
 class OwnerListResponse(BaseModel):
     items: list[OwnerOut]
     total: int

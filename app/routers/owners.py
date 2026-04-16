@@ -4,8 +4,8 @@ from sqlalchemy import func, select
 
 from app.database import get_db
 from app.models import Owner
-from app.schemas import OwnerCreate, OwnerUpdate, OwnerOut, OwnerListResponse
-from app.auth import require_admin_key
+from app.schemas import OwnerCreate, OwnerUpdate, OwnerOut, OwnerPublicOut, OwnerListResponse
+from app.auth import require_admin_key, require_user_key
 
 router = APIRouter()
 
@@ -20,6 +20,19 @@ async def create_owner(
     db.add(owner)
     await db.commit()
     await db.refresh(owner)
+    return owner
+
+
+@router.get("/public/{owner_uuid}", response_model=OwnerPublicOut)
+async def get_owner_public(
+    owner_uuid: str,
+    db: AsyncSession = Depends(get_db),
+    _: str = Depends(require_user_key),
+):
+    result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    owner = result.scalar_one_or_none()
+    if not owner:
+        raise HTTPException(status_code=404, detail="owner_not_found")
     return owner
 
 
