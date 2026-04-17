@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "POST",
-    "requestUrl": "http://127.0.0.1:8000/tickets/c5ac3e58-d43d-46bd-840a-3a7f05d8dcd2/comments",
+    "requestUrl": "http://127.0.0.1:8000/tickets/1970f36c-419b-440c-8391-e61197dfc7a9/comments",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",
@@ -78,15 +78,63 @@
             "private": false
         }
     ],
-    "responseBody": "{\n  \"id\": 14,\n  \"author\": \"Иван\",\n  \"text\": \"Тут будет текст\",\n  \"file_path\": null,\n  \"created_at\": \"2026-04-12T23:11:58\"\n}",
+    "responseBody": "",
     "responseHeaders": [
         {
+            "name": "access-control-allow-credentials",
+            "value": "true"
+        },
+        {
+            "name": "access-control-allow-origin",
+            "value": "https://api2app.org"
+        },
+        {
+            "name": "allow",
+            "value": "OPTIONS, POST"
+        },
+        {
+            "name": "connection",
+            "value": "keep-alive"
+        },
+        {
+            "name": "content-language",
+            "value": "ru"
+        },
+        {
             "name": "content-length",
-            "value": "119"
+            "value": "118"
         },
         {
             "name": "content-type",
             "value": "application/json"
+        },
+        {
+            "name": "cross-origin-opener-policy",
+            "value": "same-origin"
+        },
+        {
+            "name": "date",
+            "value": "Wed, 15 Apr 2026 18:32:31 GMT"
+        },
+        {
+            "name": "referrer-policy",
+            "value": "same-origin"
+        },
+        {
+            "name": "server",
+            "value": "nginx/1.18.0 (Ubuntu)"
+        },
+        {
+            "name": "vary",
+            "value": "Accept, Accept-Language, Cookie, origin"
+        },
+        {
+            "name": "x-content-type-options",
+            "value": "nosniff"
+        },
+        {
+            "name": "x-frame-options",
+            "value": "DENY"
         }
     ],
     "responseContentType": "json"

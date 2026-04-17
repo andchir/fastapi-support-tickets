@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "GET",
-    "requestUrl": "http://127.0.0.1:8000/admin/tickets/021c90f9-ea9f-480a-9201-152c512a29dc",
+    "requestUrl": "http://127.0.0.1:8000/admin/tickets/1970f36c-419b-440c-8391-e61197dfc7a9",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",
@@ -53,21 +53,75 @@
             "private": false
         },
         {
+            "name": "Accept-language",
+            "value": "ru",
+            "hidden": false,
+            "private": false
+        },
+        {
             "name": "",
             "value": "",
             "hidden": false,
             "private": false
         }
     ],
-    "responseBody": "{\n  \"id\": 1,\n  \"uuid\": \"021c90f9-ea9f-480a-9201-152c512a29dc\",\n  \"subject\": \"Тема обращения\",\n  \"name\": \"Андрей\",\n  \"email\": \"user@mail.ru\",\n  \"message\": \"Тут будет вопрос\",\n  \"file_path\": null,\n  \"status\": \"new\",\n  \"created_at\": \"2026-04-12T10:23:53\",\n  \"updated_at\": \"2026-04-12T10:23:53\",\n  \"comments\": []\n}",
+    "responseBody": "",
     "responseHeaders": [
         {
+            "name": "access-control-allow-credentials",
+            "value": "true"
+        },
+        {
+            "name": "access-control-allow-origin",
+            "value": "https://api2app.org"
+        },
+        {
+            "name": "allow",
+            "value": "OPTIONS, POST"
+        },
+        {
+            "name": "connection",
+            "value": "keep-alive"
+        },
+        {
+            "name": "content-language",
+            "value": "ru"
+        },
+        {
             "name": "content-length",
-            "value": "298"
+            "value": "596"
         },
         {
             "name": "content-type",
             "value": "application/json"
+        },
+        {
+            "name": "cross-origin-opener-policy",
+            "value": "same-origin"
+        },
+        {
+            "name": "date",
+            "value": "Wed, 15 Apr 2026 18:36:40 GMT"
+        },
+        {
+            "name": "referrer-policy",
+            "value": "same-origin"
+        },
+        {
+            "name": "server",
+            "value": "nginx/1.18.0 (Ubuntu)"
+        },
+        {
+            "name": "vary",
+            "value": "Accept, Accept-Language, Cookie, origin"
+        },
+        {
+            "name": "x-content-type-options",
+            "value": "nosniff"
+        },
+        {
+            "name": "x-frame-options",
+            "value": "DENY"
         }
     ],
     "responseContentType": "json"

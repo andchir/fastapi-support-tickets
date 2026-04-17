@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "PATCH",
-    "requestUrl": "http://127.0.0.1:8000/admin/tickets/a0b174c0-e7a1-4421-99ae-22436bc4161b/status",
+    "requestUrl": "http://127.0.0.1:8000/admin/tickets/1970f36c-419b-440c-8391-e61197dfc7a9/status",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",
@@ -26,7 +26,7 @@
     "bodyFields": [
         {
             "name": "status",
-            "value": "new",
+            "value": "Новый",
             "hidden": false,
             "private": false
         },
@@ -63,21 +63,75 @@
             "private": false
         },
         {
+            "name": "Accept-language",
+            "value": "ru",
+            "hidden": false,
+            "private": false
+        },
+        {
             "name": "",
             "value": "",
             "hidden": false,
             "private": false
         }
     ],
-    "responseBody": "{\n  \"id\": 35,\n  \"uuid\": \"a0b174c0-e7a1-4421-99ae-22436bc4161b\",\n  \"subject\": \"Вопрос в службу поддержки\",\n  \"name\": \"Андрей\",\n  \"email\": \"aaa@bbb.cc\",\n  \"message\": \"Здравствуйте! Это не работает.\",\n  \"file_path\": \"http://localhost:8000/uploads/a151c50d-8c7d-4b00-bed3-784d56157234.png\",\n  \"status\": \"new\",\n  \"created_at\": \"2026-04-12T15:28:41\",\n  \"updated_at\": \"2026-04-12T16:44:03\"\n}",
+    "responseBody": "",
     "responseHeaders": [
         {
+            "name": "access-control-allow-credentials",
+            "value": "true"
+        },
+        {
+            "name": "access-control-allow-origin",
+            "value": "https://api2app.org"
+        },
+        {
+            "name": "allow",
+            "value": "OPTIONS, POST"
+        },
+        {
+            "name": "connection",
+            "value": "keep-alive"
+        },
+        {
+            "name": "content-language",
+            "value": "ru"
+        },
+        {
             "name": "content-length",
-            "value": "396"
+            "value": "343"
         },
         {
             "name": "content-type",
             "value": "application/json"
+        },
+        {
+            "name": "cross-origin-opener-policy",
+            "value": "same-origin"
+        },
+        {
+            "name": "date",
+            "value": "Wed, 15 Apr 2026 18:35:20 GMT"
+        },
+        {
+            "name": "referrer-policy",
+            "value": "same-origin"
+        },
+        {
+            "name": "server",
+            "value": "nginx/1.18.0 (Ubuntu)"
+        },
+        {
+            "name": "vary",
+            "value": "Accept, Accept-Language, Cookie, origin"
+        },
+        {
+            "name": "x-content-type-options",
+            "value": "nosniff"
+        },
+        {
+            "name": "x-frame-options",
+            "value": "DENY"
         }
     ],
     "responseContentType": "json"

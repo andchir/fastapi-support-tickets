@@ -1,20 +1,20 @@
 {
-    "url": "https://api2app.org/ru/api/v1/api_items/948",
-    "id": 948,
-    "date_created": "2026-04-11T20:54:47.783449Z",
-    "name": "Служба поддержки - comment - create",
-    "uuid": "ad16c632-35e8-11f1-b24f-525400f8f94f",
+    "url": "https://api2app.org/ru/api/v1/api_items/955",
+    "id": 955,
+    "date_created": "2026-04-15T18:27:04.671666Z",
+    "name": "Служба поддержки - owners post",
+    "uuid": "b3ea3da0-38f8-11f1-b4f7-525400f8f94f",
     "shared": true,
     "hidden": true,
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "POST",
-    "requestUrl": "http://127.0.0.1:8000/tickets/1970f36c-419b-440c-8391-e61197dfc7a9/comments",
+    "requestUrl": "http://127.0.0.1:8000/admin/owners",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",
     "authPassword": "",
-    "sendAsFormData": true,
+    "sendAsFormData": false,
     "useLocalStorage": false,
     "dailyLimitUsage": 0,
     "dailyLimitForUniqueUsers": false,
@@ -25,22 +25,15 @@
     "bodyContentPrivate": false,
     "bodyFields": [
         {
-            "name": "author",
-            "value": "Иван",
+            "name": "name",
+            "value": "Служба поддержки 2",
             "hidden": false,
             "private": false
         },
         {
-            "name": "text",
-            "value": "Тут будет текст",
+            "name": "description",
+            "value": "Тут будет описание",
             "hidden": false,
-            "private": false
-        },
-        {
-            "name": "file",
-            "value": "",
-            "hidden": false,
-            "isFile": true,
             "private": false
         },
         {
@@ -53,9 +46,7 @@
     "queryParams": [
         {
             "name": "",
-            "value": "",
-            "hidden": false,
-            "private": false
+            "value": ""
         }
     ],
     "headers": [
@@ -68,6 +59,18 @@
         {
             "name": "X-API-Key",
             "value": "8c4f063d-387a-47b2-af07-bee1e96ebc42",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "Content-Type",
+            "value": "application/json",
+            "hidden": false,
+            "private": false
+        },
+        {
+            "name": "Accept-language",
+            "value": "ru",
             "hidden": false,
             "private": false
         },
@@ -102,7 +105,7 @@
         },
         {
             "name": "content-length",
-            "value": "118"
+            "value": "193"
         },
         {
             "name": "content-type",
@@ -114,7 +117,7 @@
         },
         {
             "name": "date",
-            "value": "Wed, 15 Apr 2026 18:32:31 GMT"
+            "value": "Thu, 16 Apr 2026 08:45:16 GMT"
         },
         {
             "name": "referrer-policy",
