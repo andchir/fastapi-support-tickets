@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "GET",
-    "requestUrl": "http://127.0.0.1:8000/admin/owners/public/70b3b3bd-e422-4541-ae6b-08af986b298a",
+    "requestUrl": "/admin/owners/public/70b3b3bd-e422-4541-ae6b-08af986b298a",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",

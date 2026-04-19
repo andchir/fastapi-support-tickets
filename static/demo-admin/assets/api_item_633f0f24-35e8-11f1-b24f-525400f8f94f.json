@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "GET",
-    "requestUrl": "http://127.0.0.1:8000/admin/tickets",
+    "requestUrl": "/admin/tickets",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",

@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "PATCH",
-    "requestUrl": "http://127.0.0.1:8000/admin/tickets/1970f36c-419b-440c-8391-e61197dfc7a9/status",
+    "requestUrl": "/admin/tickets/1970f36c-419b-440c-8391-e61197dfc7a9/status",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",

@@ -9,7 +9,7 @@
     "sender": "browser",
     "requestContentType": "json",
     "requestMethod": "GET",
-    "requestUrl": "http://127.0.0.1:8000/admin/tickets/1970f36c-419b-440c-8391-e61197dfc7a9",
+    "requestUrl": "/admin/tickets/1970f36c-419b-440c-8391-e61197dfc7a9",
     "basicAuth": false,
     "bodyDataSource": "fields",
     "authLogin": "",
