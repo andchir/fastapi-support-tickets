@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import date
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +15,7 @@ from app.schemas import (
 )
 from app.auth import require_admin_key
 from app.i18n import get_language, VALID_STATUSES, VALID_STATUSES_RU
+from app.timeutil import local_day_start_utc_naive, local_next_day_start_utc_naive, utc_now_naive
 
 router = APIRouter()
 
@@ -41,9 +42,9 @@ async def list_tickets(
     if status:
         filters.append(Ticket.status == status)
     if date_from:
-        filters.append(Ticket.created_at >= datetime.combine(date_from, datetime.min.time()))
+        filters.append(Ticket.created_at >= local_day_start_utc_naive(date_from))
     if date_to:
-        filters.append(Ticket.created_at <= datetime.combine(date_to, datetime.max.time()))
+        filters.append(Ticket.created_at < local_next_day_start_utc_naive(date_to))
 
     base = select(Ticket).options(selectinload(Ticket.owner))
     count_base = select(func.count()).select_from(Ticket)
@@ -108,7 +109,7 @@ async def update_ticket_status(
     if not ticket:
         raise HTTPException(status_code=404, detail="ticket_not_found")
     ticket.status = body.status
-    ticket.updated_at = datetime.utcnow()
+    ticket.updated_at = utc_now_naive()
     await db.commit()
     await db.refresh(ticket)
     return ticket

@@ -1,6 +1,5 @@
 import os
 import uuid
-from datetime import datetime
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile, File, Form, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,6 +13,7 @@ from app.schemas import TicketOut, TicketWithComments, TicketStatusUpdate
 from app.auth import require_user_key
 from app.config import settings
 from app.i18n import get_language, get_status
+from app.timeutil import utc_now_naive
 
 router = APIRouter()
 
@@ -110,7 +110,7 @@ async def close_ticket(
         raise HTTPException(status_code=404, detail="ticket_not_found")
     lang = get_language(request)
     ticket.status = get_status("closed", lang)
-    ticket.updated_at = datetime.utcnow()
+    ticket.updated_at = utc_now_naive()
     await db.commit()
     await db.refresh(ticket)
     return ticket

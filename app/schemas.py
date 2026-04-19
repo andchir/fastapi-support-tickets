@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, model_validator
+from pydantic import BaseModel, EmailStr, Field, field_serializer, model_validator
 
 from app.config import settings
+from app.timeutil import as_app_timezone
 
 
 def _to_file_url(file_path: Optional[str]) -> Optional[str]:
@@ -26,6 +27,10 @@ class CommentOut(BaseModel):
     created_at: datetime
 
     model_config = {"from_attributes": True}
+
+    @field_serializer("created_at")
+    def _created_at_app_tz(self, v: datetime) -> datetime:
+        return as_app_timezone(v)
 
     @model_validator(mode="after")
     def build_file_url(self):
@@ -90,6 +95,10 @@ class TicketOut(BaseModel):
 
     model_config = {"from_attributes": True}
 
+    @field_serializer("created_at", "updated_at")
+    def _ticket_timestamps_app_tz(self, v: datetime) -> datetime:
+        return as_app_timezone(v)
+
     @model_validator(mode="after")
     def build_file_url(self):
         self.file_path = _to_file_url(self.file_path)
@@ -118,6 +127,10 @@ class TicketListItem(BaseModel):
 
     model_config = {"from_attributes": True}
 
+    @field_serializer("created_at", "updated_at")
+    def _list_timestamps_app_tz(self, v: datetime) -> datetime:
+        return as_app_timezone(v)
+
 
 class TicketListResponse(BaseModel):
     items: list[TicketListItem]
@@ -141,6 +154,10 @@ class MessageOut(BaseModel):
     status: str
 
     model_config = {"from_attributes": True}
+
+    @field_serializer("created_at")
+    def _message_created_app_tz(self, v: datetime) -> datetime:
+        return as_app_timezone(v)
 
 
 class MessageListResponse(BaseModel):

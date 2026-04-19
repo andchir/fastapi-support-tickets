@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import String, Text, DateTime, Enum, ForeignKey  # Enum kept for Message.status
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
+from app.timeutil import utc_now_naive
 
 
 class Owner(Base):
@@ -29,8 +30,8 @@ class Ticket(Base):
     message: Mapped[str] = mapped_column(Text)
     file_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
     status: Mapped[str] = mapped_column(String(50), default="new")
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now_naive)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now_naive, onupdate=utc_now_naive)
 
     owner: Mapped["Owner"] = relationship("Owner", back_populates="tickets")
     comments: Mapped[list["Comment"]] = relationship("Comment", back_populates="ticket", cascade="all, delete-orphan")
@@ -50,7 +51,7 @@ class Comment(Base):
     author: Mapped[str] = mapped_column(String(255))
     text: Mapped[str] = mapped_column(Text)
     file_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now_naive)
 
     ticket: Mapped["Ticket"] = relationship("Ticket", back_populates="comments")
 
@@ -62,7 +63,7 @@ class Message(Base):
     owner: Mapped[str] = mapped_column(String(255), index=True)
     author: Mapped[str] = mapped_column(String(255))
     text: Mapped[str] = mapped_column(Text)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utc_now_naive)
     status: Mapped[str] = mapped_column(
         Enum("new", "read", name="message_status"),
         default="new",

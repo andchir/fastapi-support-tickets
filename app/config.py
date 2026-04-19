@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     base_url: str = "http://localhost:8000"
     cors_allowed_origins: str = ""
     ws_port: int = 8765
+    app_timezone: str = "Europe/Moscow"
 
     class Config:
         env_file = ".env"
