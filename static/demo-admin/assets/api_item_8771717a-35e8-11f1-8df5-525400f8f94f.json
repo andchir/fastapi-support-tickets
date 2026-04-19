@@ -32,12 +32,7 @@
         }
     ],
     "queryParams": [
-        {
-            "name": "status",
-            "value": "new",
-            "hidden": false,
-            "private": false
-        }
+
     ],
     "headers": [
         {
