@@ -92,11 +92,11 @@
                     "enabled": true,
                     "options": {
                         "inputApiUuid": "d340b300-35e2-11f1-ac26-525400f8f94f",
-                        "outputApiUuid": null,
                         "inputApiFieldName": "owner_uuid",
                         "inputApiFieldType": "input",
-                        "outputApiFieldName": "uuid",
-                        "outputApiFieldType": "query_parameter"
+                        "outputApiFieldName": "",
+                        "outputApiFieldType": "",
+                        "queryParameterName": "uuid"
                     },
                     "readOnly": false,
                     "required": true,
@@ -556,9 +556,9 @@
                     "required": true,
                     "valueFrom": "",
                     "blockIndex": 2,
-                    "orderIndex": 1,
+                    "orderIndex": 3,
                     "prefixText": "",
-                    "storeValue": true,
+                    "storeValue": false,
                     "suffixText": "",
                     "hiddenByField": ""
                 },

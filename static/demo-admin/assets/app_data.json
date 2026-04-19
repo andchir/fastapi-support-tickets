@@ -448,7 +448,8 @@
                         "inputApiFieldName": "access_key",
                         "inputApiFieldType": "params",
                         "outputApiFieldName": "access_key",
-                        "outputApiFieldType": "output"
+                        "outputApiFieldType": "output",
+                        "queryParameterName": "uuid"
                     },
                     "readOnly": false,
                     "required": true,
