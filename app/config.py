@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     cors_allowed_origins: str = ""
     ws_port: int = 8765
     app_timezone: str = "Europe/Moscow"
+    debug: bool = False
 
     class Config:
         env_file = ".env"
