@@ -15,23 +15,23 @@ def app_tz() -> ZoneInfo:
 
 
 def utc_now_naive() -> datetime:
-    """UTC «сейчас» без tzinfo — для колонок DateTime, где хранится UTC."""
+    """UTC 'now' without tzinfo — for DateTime columns that store UTC."""
     return datetime.now(UTC).replace(tzinfo=None)
 
 
 def as_app_timezone(dt: datetime) -> datetime:
-    """Наивные значения считаются UTC; результат — aware в часовом поясе приложения."""
+    """Naive values are considered UTC; result is aware in the application's timezone."""
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=UTC)
     return dt.astimezone(app_tz())
 
 
 def local_day_start_utc_naive(d: date) -> datetime:
-    """Начало календарного дня d в часовом поясе приложения, в наивном UTC."""
+    """Start of calendar day d in the application's timezone, in naive UTC."""
     local_start = datetime.combine(d, time.min, tzinfo=app_tz())
     return local_start.astimezone(UTC).replace(tzinfo=None)
 
 
 def local_next_day_start_utc_naive(d: date) -> datetime:
-    """Полуночь следующего дня после d в поясе приложения, в наивном UTC."""
+    """Midnight of the day after d in the application's timezone, in naive UTC."""
     return local_day_start_utc_naive(d + timedelta(days=1))
