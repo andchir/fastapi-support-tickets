@@ -36,27 +36,27 @@ async def get_owner_public(
     return owner
 
 
-@router.get("/{owner_uuid}", response_model=OwnerOut)
+@router.get("/{access_key}", response_model=OwnerOut)
 async def get_owner(
-    owner_uuid: str,
+    access_key: str,
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    result = await db.execute(select(Owner).where(Owner.access_key == access_key))
     owner = result.scalar_one_or_none()
     if not owner:
         raise HTTPException(status_code=404, detail="owner_not_found")
     return owner
 
 
-@router.patch("/{owner_uuid}", response_model=OwnerOut)
+@router.patch("/{access_key}", response_model=OwnerOut)
 async def update_owner(
-    owner_uuid: str,
+    access_key: str,
     body: OwnerUpdate,
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    result = await db.execute(select(Owner).where(Owner.access_key == access_key))
     owner = result.scalar_one_or_none()
     if not owner:
         raise HTTPException(status_code=404, detail="owner_not_found")
@@ -67,13 +67,13 @@ async def update_owner(
     return owner
 
 
-@router.delete("/{owner_uuid}", status_code=204)
+@router.delete("/{access_key}", status_code=204)
 async def delete_owner(
-    owner_uuid: str,
+    access_key: str,
     db: AsyncSession = Depends(get_db),
     _: str = Depends(require_admin_key),
 ):
-    result = await db.execute(select(Owner).where(Owner.uuid == owner_uuid))
+    result = await db.execute(select(Owner).where(Owner.uuid == access_key))
     owner = result.scalar_one_or_none()
     if not owner:
         raise HTTPException(status_code=404, detail="owner_not_found")
